@@ -4,7 +4,7 @@ CREATE SCHEMA `appointment_db`;
 use `appointment_db`; 
 
 CREATE TABLE `user`(
-	`id` VARCHAR(70) ,
+	`id` BINARY(16) NOT NULL,
     `first_name` VARCHAR(50) NOT NULL,
     `last_name` VARCHAR(50) NOT NULL,
     `email` VARCHAR(50) NOT NULL,
@@ -14,13 +14,25 @@ CREATE TABLE `user`(
     primary key(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
 select * 
 from user; 
+
+10-10:30 
+10:30-11:00
+
+barbers{
+names,fk id }
+
+
+
+
 CREATE TABLE `appointment`(
-	`id` CHAR(36),
-    ``
-    
+	`id` BINARY(16) NOT NULL,
+    `date_of_appontment` DATETIME, 
     `user_id` CHAR(36),    
+    `barber_id`  BINARY(16) NOT NULL
     primary key(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

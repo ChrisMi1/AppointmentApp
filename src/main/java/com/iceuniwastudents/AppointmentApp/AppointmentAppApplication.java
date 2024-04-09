@@ -19,7 +19,7 @@ public class AppointmentAppApplication {
 	public CommandLineRunner loadData(InventoryRepo inventoryRepository){
 		return args -> {
 			User user = new User();
-			user.setFirstName("Christos Maltezos");
+			user.setFirstName("Christos Μαλτεζοσ");
 			user.setPassword("pasdapsd");
 			user.setEmail("pasdapsd");
 			user.setPhoneNumber("pasdapsd");
