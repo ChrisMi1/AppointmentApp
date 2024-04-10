@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -16,8 +17,8 @@ import java.util.UUID;
 @Getter
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
+    private String id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
