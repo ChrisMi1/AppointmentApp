@@ -33,6 +33,14 @@ CREATE TABLE `schedule`(
 	FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `service`(
+	`id` VARCHAR(36) NOT NULL ,
+    `service_name` VARCHAR(200) NOT NULL,
+    `duration` INT NOT NULL,
+    `price` DECIMAL(10,2) NOT NULL,
+     primary key(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `appointment`(
 	`id` VARCHAR(36) NOT NULL,
     `appointment_number` VARCHAR(8) NOT NULL , 
@@ -40,11 +48,13 @@ CREATE TABLE `appointment`(
     `to` DATETIME NOT NULL, 
     `total_price` DECIMAL(10,2) NOT NULL ,
     `canceled` BOOL NOT NULL, 
-    `user_id` CHAR(36),    
+    `user_id` VARCHAR(36) NOT NULL,
     `employee_id`  VARCHAR(36) NOT NULL,
+    `service_id` VARCHAR(36) NOT NULL,
     primary key(`id`),
     FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user`(`id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user`(`id`),
+    FOREIGN KEY(`service_id`) REFERENCES `service`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DELIMITER //
@@ -57,23 +67,6 @@ BEGIN
 END;
 //
 DELIMITER ;
-
-CREATE TABLE `service`(
-	`id` VARCHAR(36) NOT NULL ,
-    `service_name` VARCHAR(200) NOT NULL,
-    `duration` INT(4) NOT NULL,
-    `price` DECIMAL(10,2),
-     primary key(`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `service_booked`(
-	`id` VARCHAR(36) NOT NULL ,
-    `appointment_id` VARCHAR(36) NOT NULL ,
-    `service_id` VARCHAR(36) NOT NULL ,
-	primary key(`id`),
-    FOREIGN KEY(`appointment_id`) REFERENCES `appointment`(`id`),
-	FOREIGN KEY(`service_id`) REFERENCES `service`(`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 

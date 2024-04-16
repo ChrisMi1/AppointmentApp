@@ -7,12 +7,12 @@ import org.hibernate.annotations.UuidGenerator;
 import java.util.List;
 
 @Entity
-@Table(name ="user")
+@Table(name ="employee")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class User {
+public class Employee {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     private String id;
@@ -24,6 +24,14 @@ public class User {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)
-    private List<Appointment> appointments;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "photo")
+    private String photo;
+    @Column(name = "role")
+    private String role;
+    @OneToMany(mappedBy = "employee",cascade = CascadeType.REMOVE)
+    List<Schedule> scheduleList;
+    @OneToMany(mappedBy = "employee",cascade = CascadeType.REMOVE)
+    List<Appointment> appointments;
 }

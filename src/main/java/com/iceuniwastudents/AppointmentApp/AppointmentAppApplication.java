@@ -15,22 +15,6 @@ public class AppointmentAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AppointmentAppApplication.class, args);
 	}
-	@Bean
-	public CommandLineRunner loadData(InventoryRepo inventoryRepository){
-		return args -> {
-			User user = new User();
-			user.setFirstName("Christos Μαλτεζοσ");
-			user.setPassword("pasdapsd");
-			user.setEmail("pasdapsd");
-			user.setPhoneNumber("pasdapsd");
-			user.setLastName("pasdapsd");
-			user.setRole("ROLE_USER");
-			inventoryRepository.save(user);
 
-			List<User> userSet= inventoryRepository.findAll();
-			for(var user1:userSet){
-				System.out.println(user1);
-			}
-		};
-	}
+
 }
