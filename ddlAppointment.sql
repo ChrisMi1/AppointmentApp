@@ -19,8 +19,9 @@ CREATE TABLE `employee`(
     `email` VARCHAR(50) NOT NULL,
 	`phone_number` VARCHAR(10) NOT NULL,
     `password` VARCHAR(70) NOT NULL,
-    `photo` blob NOT NULL,
+    `photo` blob ,
     `role` VARCHAR(50) NOT NULL,
+    `email_verified` BOOLEAN DEFAULT FALSE, 
     primary key(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -55,6 +56,15 @@ CREATE TABLE `appointment`(
     FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user`(`id`),
     FOREIGN KEY(`service_id`) REFERENCES `service`(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `verification`(
+	`id` VARCHAR(36) NOT NULL,
+    `token` VARCHAR(300) NOT NULL, 
+    `created` TIMESTAMP NOT NULL, 
+    `employee_id` VARCHAR(36) NOT NULL,
+     primary key(`id`),
+	 FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DELIMITER //

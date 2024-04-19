@@ -27,6 +27,16 @@ public class JWTService {
                 .setIssuer(issuer)
                 .compact();
     }
+    public String generateTokenEmail(Employee employee){
+        return Jwts.builder()
+                .setSubject(employee.getEmail())
+                .signWith(SignatureAlgorithm.HS256, key)
+                .setExpiration(new Date(System.currentTimeMillis()+(1000 * expireInSeconds)))
+                .setIssuer(issuer)
+                .compact();
+    }
+
+
 
     public String getEmployeeId(String token){
         Claims claims = Jwts.parser()

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,4 +35,15 @@ public class Employee {
     List<Schedule> scheduleList;
     @OneToMany(mappedBy = "employee",cascade = CascadeType.REMOVE)
     List<Appointment> appointments;
+    @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL)
+    List<Verification> verificationTokens;
+    @Column(name = "email_verified")
+    private boolean emailVerified;
+
+    public void addVerificationToken(Verification verification){
+        if(verificationTokens==null){
+            verificationTokens=new ArrayList<>();
+        }
+        verificationTokens.add(verification);
+    }
 }
