@@ -36,6 +36,7 @@ public class Employee {
     @OneToMany(mappedBy = "employee",cascade = CascadeType.REMOVE)
     List<Appointment> appointments;
     @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL)
+    @OrderBy("id desc")
     List<Verification> verificationTokens;
     @Column(name = "email_verified")
     private boolean emailVerified;

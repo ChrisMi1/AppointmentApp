@@ -31,7 +31,7 @@ public class JWTService {
         return Jwts.builder()
                 .setSubject(employee.getEmail())
                 .signWith(SignatureAlgorithm.HS256, key)
-                .setExpiration(new Date(System.currentTimeMillis()+(1000 * expireInSeconds)))
+                .setExpiration(new Date(System.currentTimeMillis()+(1000  * expireInSeconds)))
                 .setIssuer(issuer)
                 .compact();
     }

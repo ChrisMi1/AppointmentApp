@@ -3,17 +3,25 @@ package com.iceuniwastudents.AppointmentApp.service;
 import com.iceuniwastudents.AppointmentApp.Repository.EmployeeRepo;
 import com.iceuniwastudents.AppointmentApp.Repository.VerificationRepo;
 import com.iceuniwastudents.AppointmentApp.dto.LoginBody;
+import com.iceuniwastudents.AppointmentApp.dto.LoginResponse;
 import com.iceuniwastudents.AppointmentApp.dto.RegisterBody;
+import com.iceuniwastudents.AppointmentApp.dto.RegisterResponse;
 import com.iceuniwastudents.AppointmentApp.exception.EmailAlreadyExists;
+import com.iceuniwastudents.AppointmentApp.exception.EmailNotFound;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
+import com.iceuniwastudents.AppointmentApp.exception.UserNotVerified;
 import com.iceuniwastudents.AppointmentApp.model.Employee;
 import com.iceuniwastudents.AppointmentApp.model.User;
 import com.iceuniwastudents.AppointmentApp.model.Verification;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +32,7 @@ public class EmployeeService {
     private final JWTService jwtService;
     private final EmailService emailService;
     private final VerificationRepo verificationRepo;
-    public String register(RegisterBody registerBody) throws EmailAlreadyExists, MailFailureException {
+    public RegisterResponse register(RegisterBody registerBody) throws EmailAlreadyExists, MailFailureException {
         if(employeeRepo.findByEmail(registerBody.getEmail()).isPresent()){
             throw new EmailAlreadyExists("The email already exists");
         }
@@ -40,7 +48,10 @@ public class EmployeeService {
         emailService.sendVerificationEmail(verificationToken);
         employee.addVerificationToken(verificationToken);
         employeeRepo.save(employee);
-        return "The employee added successfully!";
+        return RegisterResponse.builder()
+                .message("Please verify your email")
+                .success(true)
+                .build();
 
     }
 
@@ -61,9 +72,40 @@ public class EmployeeService {
             if(!employee.isEmailVerified()){
                 employee.setEmailVerified(true);
                 employeeRepo.save(employee);
+                verificationRepo.deleteByEmployee(employee);
                 return true;
             }
         }
         return false;
+    }
+
+    public LoginResponse login(LoginBody loginBody) throws EmailNotFound, UserNotVerified,MailFailureException {
+        Optional<Employee> employee = employeeRepo.findByEmail(loginBody.getEmail());
+        if(employee.isPresent()){
+            Employee employee1 = employee.get();
+            if(encryptionService.verifyPassword(loginBody.getPassword(),employee1.getPassword())){
+                if(employee1.isEmailVerified()){
+                    return LoginResponse.builder()
+                            .jwt(jwtService.generateToken(employee1))
+                            .success(true)
+                            .build();
+                }else{
+                    List<Verification> verificationTokens = employee1.getVerificationTokens();
+                    boolean resend= verificationTokens.isEmpty() ||
+                            verificationTokens.getFirst().getCreated().before(new Timestamp(System.currentTimeMillis()-60*60*1000));
+                    if(resend){
+                        Verification verificationToken1 = createVerificationToken(employee1);
+                        verificationRepo.save(verificationToken1);
+                        emailService.sendVerificationEmail(verificationToken1);
+                    }
+                    throw new UserNotVerified("Please verify your email!");
+                }
+            }else{
+                throw new UserNotVerified("Wrong password");
+            }
+        }else{
+            throw new EmailNotFound("The email doesn't exist");
+        }
+
     }
 }

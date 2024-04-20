@@ -37,7 +37,7 @@ public class EmailService {
         try{
             javaMailSender.send(simpleMailMessage);
         }catch (MailException e ){
-            throw new MailFailureException("Something went wrong!");
+            throw new MailFailureException("Something went wrong! "+ e.getMessage());
         }
 
     }
