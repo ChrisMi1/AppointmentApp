@@ -18,10 +18,10 @@ public class Appointment {
     private String id;
     @Column(name = "appointment_number")
     private String appointmentNumber;
-    @Column(name = "from")
-    private LocalDateTime from;
-    @Column(name = "to")
-    private LocalDateTime to;
+    @Column(name = "start")
+    private LocalDateTime start;
+    @Column(name = "end")
+    private LocalDateTime end;
     @Column(name = "total_price")
     private long price;
     @Column(name = "canceled")

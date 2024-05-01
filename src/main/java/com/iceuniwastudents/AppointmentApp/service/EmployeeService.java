@@ -11,11 +11,7 @@ import com.iceuniwastudents.AppointmentApp.exception.EmailNotFound;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.exception.UserNotVerified;
 import com.iceuniwastudents.AppointmentApp.model.Employee;
-import com.iceuniwastudents.AppointmentApp.model.User;
 import com.iceuniwastudents.AppointmentApp.model.Verification;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +48,6 @@ public class EmployeeService {
                 .message("Please verify your email")
                 .success(true)
                 .build();
-
     }
 
     private Verification createVerificationToken(Employee employee){
@@ -61,7 +56,6 @@ public class EmployeeService {
                 .employee(employee)
                 .created(new Timestamp(System.currentTimeMillis()))
                 .build();
-
     }
 
     @Transactional

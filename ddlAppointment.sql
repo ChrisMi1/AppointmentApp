@@ -27,8 +27,8 @@ CREATE TABLE `employee`(
 
 CREATE TABLE `schedule`(
 	`id` VARCHAR(36) NOT NULL ,
-    `from` DATETIME NOT NULL,
-    `to` DATETIME NOT NULL,
+    `start` DATETIME NOT NULL,
+    `end` DATETIME NOT NULL,
 	`employee_id` VARCHAR(36) NOT NULL,
     primary key(`id`),
 	FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`)
@@ -44,9 +44,9 @@ CREATE TABLE `service`(
 
 CREATE TABLE `appointment`(
 	`id` VARCHAR(36) NOT NULL,
-    `appointment_number` VARCHAR(8) NOT NULL , 
-    `from` DATETIME NOT NULL, 
-    `to` DATETIME NOT NULL, 
+    `appointment_number` VARCHAR(8), 
+    `start` DATETIME NOT NULL, 
+    `end` DATETIME NOT NULL, 
     `total_price` DECIMAL(10,2) NOT NULL ,
     `canceled` BOOL NOT NULL, 
     `user_id` VARCHAR(36) NOT NULL,
@@ -70,13 +70,26 @@ CREATE TABLE `verification`(
 DELIMITER //
 
 CREATE TRIGGER `set_prefix_before_insert`
-BEFORE INSERT ON `appointment`
+AFTER INSERT ON `appointment`
 FOR EACH ROW
 BEGIN
-    SET NEW.appointment_number = LEFT(NEW.id, 8); 
+    SET appointment_number = LEFT(id, 8); 
 END;
 //
 DELIMITER ;
+
+
+INSERT INTO `service` (id,service_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c1','haircut',30,10); 
+INSERT INTO `service` (id,service_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c2','Shave',10,5); 
+INSERT INTO `service` (id,service_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c3','Beard Trim',5,2); 
+INSERT INTO `service` (id,service_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c4','Hair Coloring',30,30);
+
+INSERT INTO `employee` (`id`,`first_name`,`last_name`,`email`,`phone_number`,`password`,`role`,`email_verified`) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c5','Christos','Maltezos','xristosmalt@hotmail.com','6980259394','$2a$12$N6NK63LE9ry6.TSmfvU1VuWaRKUDPp2gKuZvJfJ1iWndsGFg3pyO2','ROLE_USER',1);
+INSERT INTO `employee` (`id`,`first_name`,`last_name`,`email`,`phone_number`,`password`,`role`,`email_verified`) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c6','Kwstas','Papas','passmalt@hotmail.com','6980259394','$2a$12$N6NK63LE9ry6.TSmfvU1VuWaRKUDPp2gKuZvJfJ1iWndsGFg3pyO2','ROLE_USER',1);
+INSERT INTO `employee` (`id`,`first_name`,`last_name`,`email`,`phone_number`,`password`,`role`,`email_verified`) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c7','Nikos','Stroug','stroug@hotmail.com','6980259394','$2a$12$N6NK63LE9ry6.TSmfvU1VuWaRKUDPp2gKuZvJfJ1iWndsGFg3pyO2','ROLE_USER',1);
+
+
+
 
 
 

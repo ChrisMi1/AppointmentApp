@@ -16,10 +16,10 @@ public class Schedule {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     private String id;
-    @Column(name = "from")
-    private LocalDateTime from;
-    @Column(name = "to")
-    private LocalDateTime to;
+    @Column(name = "start")
+    private LocalDateTime start;
+    @Column(name = "end")
+    private LocalDateTime end;
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;

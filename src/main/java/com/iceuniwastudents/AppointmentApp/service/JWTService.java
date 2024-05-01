@@ -36,8 +36,6 @@ public class JWTService {
                 .compact();
     }
 
-
-
     public String getEmployeeId(String token){
         Claims claims = Jwts.parser()
                 .setSigningKey(key)

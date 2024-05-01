@@ -2,7 +2,6 @@ package com.iceuniwastudents.AppointmentApp.service;
 
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.model.Verification;
-import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

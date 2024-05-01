@@ -15,7 +15,7 @@ public class Service {
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     private String id;
     @Column(name = "service_name")
-    private String service_name;
+    private String serviceName;
     @Column(name = "duration")
     private int durationInMinutes;
     @Column(name = "price")
