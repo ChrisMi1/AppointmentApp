@@ -6,6 +6,7 @@ import com.iceuniwastudents.AppointmentApp.Repository.ServiceRepo;
 import com.iceuniwastudents.AppointmentApp.Repository.UserRepo;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentBody;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentResponse;
+import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.model.Appointment;
 import com.iceuniwastudents.AppointmentApp.model.Employee;
 import com.iceuniwastudents.AppointmentApp.model.User;
@@ -20,7 +21,8 @@ public class AppointmentService{
     private final EmployeeRepo employeeRepo;
     private final ServiceRepo serviceRepo;
     private final UserRepo userRepo;
-    public AppointmentResponse bookAppointment(AppointmentBody appointmentBody){
+    private final EmailService emailService;
+    public AppointmentResponse bookAppointment(AppointmentBody appointmentBody) throws MailFailureException {
         Employee employee = employeeRepo.findByEmail(appointmentBody.getEmployeeEmail()).get();
         com.iceuniwastudents.AppointmentApp.model.Service service = serviceRepo.findByServiceName(appointmentBody.getServiceName());
         LocalDateTime estimation = appointmentBody.getStart().plusMinutes(service.getDurationInMinutes());
@@ -35,10 +37,11 @@ public class AppointmentService{
                 .service(service)
                 .build();
         appointment = appointmentRepo.save(appointment);
-
+        appointment.setAppointmentNumber(appointment.getId().substring(0,8));
+        emailService.sendAppointmentCode(appointment);
         return AppointmentResponse.builder()
                 .appointmentNumber(appointment.getId().substring(0,8))
-                .message("There is your appointment number in case you want to modify your appointment.Thanks!")
+                .message("There is your appointment number in case you want to modify your appointment.Also we send the code in your email check it!Thanks!")
                 .success(true)
                 .build();
     }

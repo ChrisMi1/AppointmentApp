@@ -2,6 +2,7 @@ package com.iceuniwastudents.AppointmentApp.controller;
 
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentBody;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentResponse;
+import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.model.Appointment;
 import com.iceuniwastudents.AppointmentApp.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class AppointmentController {
         this.appointmentService=appointmentService;
     }
     @PostMapping
-    public ResponseEntity<AppointmentResponse> bookAppointment(@RequestBody AppointmentBody appointmentBody){
+    public ResponseEntity<AppointmentResponse> bookAppointment(@RequestBody AppointmentBody appointmentBody) throws MailFailureException {
         return new ResponseEntity<>(appointmentService.bookAppointment(appointmentBody), HttpStatus.OK);
     }
 }

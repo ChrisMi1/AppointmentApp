@@ -1,6 +1,7 @@
 package com.iceuniwastudents.AppointmentApp.service;
 
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
+import com.iceuniwastudents.AppointmentApp.model.Appointment;
 import com.iceuniwastudents.AppointmentApp.model.Verification;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,18 @@ public class EmailService {
             throw new MailFailureException("Something went wrong! "+ e.getMessage());
         }
 
+    }
+    public void sendAppointmentCode(Appointment appointment) throws MailFailureException {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(fromAddress);
+        simpleMailMessage.setTo(appointment.getUser().getEmail());
+        simpleMailMessage.setSubject("Appointment code");
+        simpleMailMessage.setText("Thank you for the trust here is your code: "+appointment.getAppointmentNumber());
+        try{
+            javaMailSender.send(simpleMailMessage);
+        }catch (MailException e ){
+            throw new MailFailureException("Something went wrong! "+ e.getMessage());
+        }
     }
 
 }
