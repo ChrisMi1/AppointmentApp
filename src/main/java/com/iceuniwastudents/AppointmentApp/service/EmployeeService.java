@@ -2,10 +2,7 @@ package com.iceuniwastudents.AppointmentApp.service;
 
 import com.iceuniwastudents.AppointmentApp.Repository.EmployeeRepo;
 import com.iceuniwastudents.AppointmentApp.Repository.VerificationRepo;
-import com.iceuniwastudents.AppointmentApp.dto.LoginBody;
-import com.iceuniwastudents.AppointmentApp.dto.LoginResponse;
-import com.iceuniwastudents.AppointmentApp.dto.RegisterBody;
-import com.iceuniwastudents.AppointmentApp.dto.RegisterResponse;
+import com.iceuniwastudents.AppointmentApp.dto.*;
 import com.iceuniwastudents.AppointmentApp.exception.EmailAlreadyExists;
 import com.iceuniwastudents.AppointmentApp.exception.EmailNotFound;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
@@ -19,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +26,20 @@ public class EmployeeService {
     private final JWTService jwtService;
     private final EmailService emailService;
     private final VerificationRepo verificationRepo;
+
+
+    public List<EmployeeResponse> getAllEmployees(){
+        List<Employee> employees = employeeRepo.findAll();
+        return employees.stream().map(this::mapToEmployeeResponse).collect(Collectors.toList());
+    }
+
+    private EmployeeResponse mapToEmployeeResponse(Employee employee){
+        return EmployeeResponse.builder()
+                .id(employee.getId())
+                .name(employee.getFirstName()+ " " + employee.getLastName())
+                .photo(employee.getPhoto())
+                .build();
+    }
     public RegisterResponse register(RegisterBody registerBody) throws EmailAlreadyExists, MailFailureException {
         if(employeeRepo.findByEmail(registerBody.getEmail()).isPresent()){
             throw new EmailAlreadyExists("The email already exists");

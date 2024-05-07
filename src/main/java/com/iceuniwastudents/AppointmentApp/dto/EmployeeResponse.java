@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class AgencyResponse {
+public class EmployeeResponse {
     private String id;
-    private String agencyName;
-    private int duration;
-    private double price;
+    private String name;
+    private String photo;
+
 }
