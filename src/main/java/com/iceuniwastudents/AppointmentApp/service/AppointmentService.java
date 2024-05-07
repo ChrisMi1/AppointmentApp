@@ -1,14 +1,12 @@
 package com.iceuniwastudents.AppointmentApp.service;
 
-import com.iceuniwastudents.AppointmentApp.Repository.AppointmentRepo;
-import com.iceuniwastudents.AppointmentApp.Repository.EmployeeRepo;
-import com.iceuniwastudents.AppointmentApp.Repository.ServiceRepo;
-import com.iceuniwastudents.AppointmentApp.Repository.UserRepo;
+import com.iceuniwastudents.AppointmentApp.Repository.*;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentBody;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentResponse;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.model.Appointment;
 import com.iceuniwastudents.AppointmentApp.model.Employee;
+import com.iceuniwastudents.AppointmentApp.model.Schedule;
 import com.iceuniwastudents.AppointmentApp.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +20,7 @@ public class AppointmentService{
     private final ServiceRepo serviceRepo;
     private final UserRepo userRepo;
     private final EmailService emailService;
+    private final ScheduleRepo scheduleRepo;
     public AppointmentResponse bookAppointment(AppointmentBody appointmentBody) throws MailFailureException {
         Employee employee = employeeRepo.findByEmail(appointmentBody.getEmployeeEmail()).get();
         com.iceuniwastudents.AppointmentApp.model.Service service = serviceRepo.findByServiceName(appointmentBody.getServiceName());
@@ -39,6 +38,12 @@ public class AppointmentService{
         appointment = appointmentRepo.save(appointment);
         appointment.setAppointmentNumber(appointment.getId().substring(0,8));
         emailService.sendAppointmentCode(appointment);
+        Schedule schedule = Schedule.builder()
+                .start(appointment.getStart())
+                .end(appointment.getEnd())
+                .employee(appointment.getEmployee())
+                .build();
+        scheduleRepo.save(schedule);
         return AppointmentResponse.builder()
                 .appointmentNumber(appointment.getId().substring(0,8))
                 .message("There is your appointment number in case you want to modify your appointment.Also we send the code in your email check it!Thanks!")
