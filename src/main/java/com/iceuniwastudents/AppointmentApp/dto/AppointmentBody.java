@@ -16,5 +16,5 @@ public class AppointmentBody {
     private LocalDateTime start;
     private User user;
     private String employeeEmail;
-    private String serviceName;
+    private String agencyName;
 }

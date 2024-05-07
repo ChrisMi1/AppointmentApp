@@ -4,10 +4,7 @@ import com.iceuniwastudents.AppointmentApp.Repository.*;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentBody;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentResponse;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
-import com.iceuniwastudents.AppointmentApp.model.Appointment;
-import com.iceuniwastudents.AppointmentApp.model.Employee;
-import com.iceuniwastudents.AppointmentApp.model.Schedule;
-import com.iceuniwastudents.AppointmentApp.model.User;
+import com.iceuniwastudents.AppointmentApp.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -17,23 +14,23 @@ import java.time.LocalDateTime;
 public class AppointmentService{
     private final AppointmentRepo appointmentRepo;
     private final EmployeeRepo employeeRepo;
-    private final ServiceRepo serviceRepo;
+    private final AgencyRepo agencyRepo;
     private final UserRepo userRepo;
     private final EmailService emailService;
     private final ScheduleRepo scheduleRepo;
     public AppointmentResponse bookAppointment(AppointmentBody appointmentBody) throws MailFailureException {
         Employee employee = employeeRepo.findByEmail(appointmentBody.getEmployeeEmail()).get();
-        com.iceuniwastudents.AppointmentApp.model.Service service = serviceRepo.findByServiceName(appointmentBody.getServiceName());
-        LocalDateTime estimation = appointmentBody.getStart().plusMinutes(service.getDurationInMinutes());
+        Agency agency = agencyRepo.findByAgencyName(appointmentBody.getAgencyName());
+        LocalDateTime estimation = appointmentBody.getStart().plusMinutes(agency.getDurationInMinutes());
         User user = userRepo.save(appointmentBody.getUser());
         Appointment appointment = Appointment.builder()
                 .start(appointmentBody.getStart())
                 .end(estimation)
-                .price(service.getPrice())
+                .price(agency.getPrice())
                 .cancelled(false)
                 .user(user)
                 .employee(employee)
-                .service(service)
+                .agency(agency)
                 .build();
         appointment = appointmentRepo.save(appointment);
         appointment.setAppointmentNumber(appointment.getId().substring(0,8));

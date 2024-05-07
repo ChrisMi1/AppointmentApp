@@ -5,17 +5,17 @@ import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 @Entity
-@Table(name = "service")
+@Table(name = "agency")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class Service {
+public class Agency {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     private String id;
-    @Column(name = "service_name")
-    private String serviceName;
+    @Column(name = "agency_name")
+    private String agencyName;
     @Column(name = "duration")
     private int durationInMinutes;
     @Column(name = "price")

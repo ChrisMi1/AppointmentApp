@@ -3,7 +3,6 @@ package com.iceuniwastudents.AppointmentApp.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 @Entity
@@ -33,6 +32,6 @@ public class Appointment {
     @JoinColumn(name = "employee_id")
     private Employee employee;
     @OneToOne
-    @JoinColumn(name = "service_id")
-    private Service service;
+    @JoinColumn(name = "agency_id")
+    private Agency agency;
 }
