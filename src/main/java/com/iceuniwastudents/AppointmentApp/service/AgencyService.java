@@ -20,7 +20,6 @@ public class AgencyService {
 
     private AgencyResponse mapToAgencyResponse(Agency agency){
         return AgencyResponse.builder()
-                .id(agency.getId())
                 .agencyName(agency.getAgencyName())
                 .duration(agency.getDurationInMinutes())
                 .price(agency.getPrice())

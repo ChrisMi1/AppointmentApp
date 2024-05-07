@@ -5,7 +5,12 @@ import lombok.*;
 import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
+
 @Entity
 @Table(name = "schedule")
 @AllArgsConstructor
@@ -16,10 +21,12 @@ public class Schedule {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     private String id;
+    @Column(name = "date")
+    private LocalDate date;
     @Column(name = "start")
-    private LocalDateTime start;
+    private LocalTime start;
     @Column(name = "end")
-    private LocalDateTime end;
+    private LocalTime end;
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;

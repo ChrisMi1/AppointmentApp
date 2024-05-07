@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class EmployeeResponse {
-    private String id;
     private String name;
+    private String email;
     private String photo;
 
 }

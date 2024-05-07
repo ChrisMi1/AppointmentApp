@@ -27,16 +27,17 @@ CREATE TABLE `employee`(
 
 CREATE TABLE `schedule`(
 	`id` VARCHAR(36) NOT NULL ,
-    `start` DATETIME NOT NULL,
-    `end` DATETIME NOT NULL,
+    `date` DATE NOT NULL, 
+    `start` time NOT NULL,
+    `end` time NOT NULL,
 	`employee_id` VARCHAR(36) NOT NULL,
     primary key(`id`),
 	FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `service`(
+CREATE TABLE `agency`(
 	`id` VARCHAR(36) NOT NULL ,
-    `service_name` VARCHAR(200) NOT NULL,
+    `agency_name` VARCHAR(200) NOT NULL,
     `duration` INT NOT NULL,
     `price` DECIMAL(10,2) NOT NULL,
      primary key(`id`)
@@ -51,11 +52,11 @@ CREATE TABLE `appointment`(
     `canceled` BOOL NOT NULL, 
     `user_id` VARCHAR(36) NOT NULL,
     `employee_id`  VARCHAR(36) NOT NULL,
-    `service_id` VARCHAR(36) NOT NULL,
+    `agency_id` VARCHAR(36) NOT NULL,
     primary key(`id`),
     FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user`(`id`),
-    FOREIGN KEY(`service_id`) REFERENCES `service`(`id`)
+    FOREIGN KEY(`agency_id`) REFERENCES `agency`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `verification`(
@@ -70,19 +71,20 @@ CREATE TABLE `verification`(
 DELIMITER //
 
 CREATE TRIGGER `set_prefix_before_insert`
-AFTER INSERT ON `appointment`
+BEFORE INSERT ON `appointment`
 FOR EACH ROW
 BEGIN
-    SET appointment_number = LEFT(id, 8); 
+    SET NEW.appointment_number = LEFT(NEW.id, 8); 
 END;
 //
 DELIMITER ;
 
 
-INSERT INTO `service` (id,service_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c1','haircut',30,10); 
-INSERT INTO `service` (id,service_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c2','Shave',10,5); 
-INSERT INTO `service` (id,service_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c3','Beard Trim',5,2); 
-INSERT INTO `service` (id,service_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c4','Hair Coloring',30,30);
+
+INSERT INTO `agency` (id,agency_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c1','haircut',30,10); 
+INSERT INTO `agency` (id,agency_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c2','Shave',10,5); 
+INSERT INTO `agency` (id,agency_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c3','Beard Trim',5,2); 
+INSERT INTO `agency` (id,agency_name,duration,price) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c4','Hair Coloring',30,30);
 
 INSERT INTO `employee` (`id`,`first_name`,`last_name`,`email`,`phone_number`,`password`,`role`,`email_verified`) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c5','Christos','Maltezos','xristosmalt@hotmail.com','6980259394','$2a$12$N6NK63LE9ry6.TSmfvU1VuWaRKUDPp2gKuZvJfJ1iWndsGFg3pyO2','ROLE_USER',1);
 INSERT INTO `employee` (`id`,`first_name`,`last_name`,`email`,`phone_number`,`password`,`role`,`email_verified`) VALUES('9e949b1b-14e3-4973-a959-5e1b34fc99c6','Kwstas','Papas','passmalt@hotmail.com','6980259394','$2a$12$N6NK63LE9ry6.TSmfvU1VuWaRKUDPp2gKuZvJfJ1iWndsGFg3pyO2','ROLE_USER',1);
@@ -90,8 +92,8 @@ INSERT INTO `employee` (`id`,`first_name`,`last_name`,`email`,`phone_number`,`pa
 
 
 
-
-
+select * 
+from schedule; 
 
 
 

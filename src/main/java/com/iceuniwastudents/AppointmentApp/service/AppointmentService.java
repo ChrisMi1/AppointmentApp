@@ -8,6 +8,7 @@ import com.iceuniwastudents.AppointmentApp.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +37,9 @@ public class AppointmentService{
         appointment.setAppointmentNumber(appointment.getId().substring(0,8));
         emailService.sendAppointmentCode(appointment);
         Schedule schedule = Schedule.builder()
-                .start(appointment.getStart())
-                .end(appointment.getEnd())
+                .date(appointment.getStart().toLocalDate())
+                .start(appointment.getStart().toLocalTime())
+                .end(appointment.getEnd().toLocalTime())
                 .employee(appointment.getEmployee())
                 .build();
         scheduleRepo.save(schedule);

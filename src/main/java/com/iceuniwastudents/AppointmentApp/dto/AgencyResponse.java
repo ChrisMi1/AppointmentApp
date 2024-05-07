@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class AgencyResponse {
-    private String id;
     private String agencyName;
     private int duration;
     private double price;
