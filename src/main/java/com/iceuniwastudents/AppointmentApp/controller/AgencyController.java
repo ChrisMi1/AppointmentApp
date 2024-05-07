@@ -1,5 +1,6 @@
 package com.iceuniwastudents.AppointmentApp.controller;
 
+import com.iceuniwastudents.AppointmentApp.dto.AgencyResponse;
 import com.iceuniwastudents.AppointmentApp.model.Agency;
 import com.iceuniwastudents.AppointmentApp.service.AgencyService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 public class AgencyController {
     private final AgencyService agencyService;
     @GetMapping
-    public ResponseEntity<List<Agency>> getAgencies(){
+    public ResponseEntity<List<AgencyResponse>> getAgencies(){
         return new ResponseEntity<>(agencyService.allAgencies(), HttpStatus.OK);
     }
 
