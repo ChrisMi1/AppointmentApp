@@ -5,13 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class AgencyResponse {
-    private String id;
-    private String agencyName;
-    private int duration;
-    private double price;
+public class AvailabilityResponse {
+    private LocalTime availableTime;
+    private boolean isAvailable;
+
 }

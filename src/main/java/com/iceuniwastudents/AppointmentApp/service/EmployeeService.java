@@ -36,7 +36,7 @@ public class EmployeeService {
     private EmployeeResponse mapToEmployeeResponse(Employee employee){
         return EmployeeResponse.builder()
                 .name(employee.getFirstName()+ " " + employee.getLastName())
-                .email(employee.getEmail())
+                .id(employee.getId())
                 .photo(employee.getPhoto())
                 .build();
     }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EmployeeResponse {
     private String name;
-    private String email;
+    private String id;
     private String photo;
 
 }
