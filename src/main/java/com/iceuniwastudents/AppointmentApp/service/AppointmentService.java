@@ -2,13 +2,16 @@ package com.iceuniwastudents.AppointmentApp.service;
 
 import com.iceuniwastudents.AppointmentApp.Repository.*;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentBody;
+import com.iceuniwastudents.AppointmentApp.dto.AppointmentDetails;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentResponse;
+import com.iceuniwastudents.AppointmentApp.exception.AppointmentNumberNotFound;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +50,20 @@ public class AppointmentService{
                 .appointmentNumber(appointment.getId().substring(0,8))
                 .message("There is your appointment number in case you want to modify your appointment.Also we send the code in your email check it!Thanks!")
                 .success(true)
+                .build();
+    }
+
+    public AppointmentDetails getAppointmentDetails(String appointmentNumber) throws AppointmentNumberNotFound{
+        Optional<Appointment> appointment= appointmentRepo.getAppointmentByAppointmentNumber(appointmentNumber);
+        if(appointment.isEmpty()){
+            throw new AppointmentNumberNotFound("The number you provide doesn't exist");
+        }
+        return AppointmentDetails.builder()
+                .start(appointment.get().getStart())
+                .userName(appointment.get().getUser().getFirstName() + " " + appointment.get().getUser().getLastName())
+                .price(appointment.get().getPrice())
+                .employeeName(appointment.get().getEmployee().getFirstName() + " " + appointment.get().getEmployee().getLastName())
+                .agencyName(appointment.get().getAgency().getAgencyName())
                 .build();
     }
 

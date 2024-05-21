@@ -1,11 +1,15 @@
 package com.iceuniwastudents.AppointmentApp.controller;
 
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentBody;
+import com.iceuniwastudents.AppointmentApp.dto.AppointmentDetails;
 import com.iceuniwastudents.AppointmentApp.dto.AppointmentResponse;
+import com.iceuniwastudents.AppointmentApp.dto.UpdateAppointmentBody;
+import com.iceuniwastudents.AppointmentApp.exception.AppointmentNumberNotFound;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.model.Appointment;
 import com.iceuniwastudents.AppointmentApp.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,4 +30,10 @@ public class AppointmentController {
     public ResponseEntity<AppointmentResponse> bookAppointment(@RequestBody AppointmentBody appointmentBody) throws MailFailureException {
         return new ResponseEntity<>(appointmentService.bookAppointment(appointmentBody), HttpStatus.OK);
     }
+
+    @GetMapping
+    public ResponseEntity<AppointmentDetails> getAppointment(@RequestParam String appointmentNumber) throws AppointmentNumberNotFound {
+        return new ResponseEntity<>(appointmentService.getAppointmentDetails(appointmentNumber),HttpStatus.OK);
+    }
+
 }

@@ -2,10 +2,7 @@ package com.iceuniwastudents.AppointmentApp.controller;
 
 import com.iceuniwastudents.AppointmentApp.dto.LoginResponse;
 import com.iceuniwastudents.AppointmentApp.dto.RegisterResponse;
-import com.iceuniwastudents.AppointmentApp.exception.EmailAlreadyExists;
-import com.iceuniwastudents.AppointmentApp.exception.EmailNotFound;
-import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
-import com.iceuniwastudents.AppointmentApp.exception.UserNotVerified;
+import com.iceuniwastudents.AppointmentApp.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,6 +43,10 @@ public class ExceptionController {
                 .failureReason(userNotVerified.getMessage())
                 .build();
         return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler
+    public ResponseEntity<String> handleExceptionAppointmentNumber(AppointmentNumberNotFound appointmentNumberNotFound){
+        return new ResponseEntity<>(appointmentNumberNotFound.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 

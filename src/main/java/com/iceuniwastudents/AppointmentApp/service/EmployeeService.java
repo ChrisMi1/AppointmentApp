@@ -50,7 +50,7 @@ public class EmployeeService {
                 .lastName(registerBody.getLastName())
                 .password(encryptionService.encryptPassword(registerBody.getPassword()))
                 .phoneNumber(registerBody.getPhoneNumber())
-                .role("ROLE_USER")
+                .role("ROLE_EMPLOYEE")
                 .build();
         Verification verificationToken = createVerificationToken(employee);
         emailService.sendVerificationEmail(verificationToken);
