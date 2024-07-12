@@ -53,10 +53,12 @@ CREATE TABLE `appointment`(
     `user_id` VARCHAR(36) NOT NULL,
     `employee_id`  VARCHAR(36) NOT NULL,
     `agency_id` VARCHAR(36) NOT NULL,
+    `schedule_id` VARCHAR(36) NOT NULL,
     primary key(`id`),
     FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user`(`id`),
-    FOREIGN KEY(`agency_id`) REFERENCES `agency`(`id`)
+    FOREIGN KEY(`agency_id`) REFERENCES `agency`(`id`),
+    FOREIGN KEY(`schedule_id`) REFERENCES `schedule`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `verification`(

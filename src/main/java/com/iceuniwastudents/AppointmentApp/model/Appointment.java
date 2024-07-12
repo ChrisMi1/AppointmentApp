@@ -31,7 +31,10 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "agency_id")
     private Agency agency;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 }

@@ -27,6 +27,13 @@ public class AppointmentService{
         Agency agency = agencyRepo.findByAgencyName(appointmentBody.getAgencyName());
         LocalDateTime estimation = appointmentBody.getStart().plusMinutes(agency.getDurationInMinutes());
         User user = userRepo.save(appointmentBody.getUser());
+        Schedule schedule = Schedule.builder()
+                .date(appointmentBody.getStart().toLocalDate())
+                .start(appointmentBody.getStart().toLocalTime())
+                .end(estimation.toLocalTime())
+                .employee(employee)
+                .build();
+
         Appointment appointment = Appointment.builder()
                 .start(appointmentBody.getStart())
                 .end(estimation)
@@ -35,17 +42,11 @@ public class AppointmentService{
                 .user(user)
                 .employee(employee)
                 .agency(agency)
+                .schedule(schedule)
                 .build();
         appointment = appointmentRepo.save(appointment);
         appointment.setAppointmentNumber(appointment.getId().substring(0,8));
         emailService.sendAppointmentCode(appointment);
-        Schedule schedule = Schedule.builder()
-                .date(appointment.getStart().toLocalDate())
-                .start(appointment.getStart().toLocalTime())
-                .end(appointment.getEnd().toLocalTime())
-                .employee(appointment.getEmployee())
-                .build();
-        scheduleRepo.save(schedule);
         return AppointmentResponse.builder()
                 .appointmentNumber(appointment.getId().substring(0,8))
                 .message("There is your appointment number in case you want to modify your appointment.Also we send the code in your email check it!Thanks!")
