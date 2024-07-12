@@ -35,5 +35,8 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDetails> getAppointment(@RequestParam String appointmentNumber) throws AppointmentNumberNotFound {
         return new ResponseEntity<>(appointmentService.getAppointmentDetails(appointmentNumber),HttpStatus.OK);
     }
-
+    @DeleteMapping
+    public ResponseEntity<String> cancelAppointment(@RequestParam String appointmentNumber) throws AppointmentNumberNotFound{
+        return new  ResponseEntity<>(appointmentService.deleteAppointment(appointmentNumber),HttpStatus.OK);
+    }
 }

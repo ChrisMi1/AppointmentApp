@@ -38,7 +38,6 @@ public class AgencyService {
     public List<AvailabilityResponse> availability(AvailabilityBody availabilityBody){
         Optional<List<Schedule>> scheduleList = scheduleRepo.findByEmployeeIdAndDate(availabilityBody.getEmployeeId(), availabilityBody.getDate());
         return findTheAvailableHours(scheduleList.get()).stream().filter(AvailabilityResponse::isAvailable).collect(Collectors.toList());
-
     }
 
     private List<AvailabilityResponse> findTheAvailableHours(List<Schedule> scheduleList) {

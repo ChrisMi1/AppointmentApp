@@ -67,5 +67,15 @@ public class AppointmentService{
                 .agencyName(appointment.get().getAgency().getAgencyName())
                 .build();
     }
+    public String deleteAppointment(String appointmentNumber) throws AppointmentNumberNotFound{
+        Optional<Appointment> appointment= appointmentRepo.getAppointmentByAppointmentNumber(appointmentNumber);
+        if(appointment.isEmpty()){
+            throw new AppointmentNumberNotFound("The number you provide doesn't exist");
+        }else{
+            appointmentRepo.delete(appointment.get());
+            return "Your appointment was cancelled successfully";
+        }
+
+    }
 
 }
