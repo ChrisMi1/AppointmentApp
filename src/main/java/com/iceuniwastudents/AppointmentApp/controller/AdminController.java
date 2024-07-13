@@ -8,15 +8,19 @@ import com.iceuniwastudents.AppointmentApp.exception.EmailAlreadyExists;
 import com.iceuniwastudents.AppointmentApp.exception.EmailNotFound;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.exception.UserNotVerified;
+import com.iceuniwastudents.AppointmentApp.model.Employee;
+import com.iceuniwastudents.AppointmentApp.model.Schedule;
 import com.iceuniwastudents.AppointmentApp.model.Verification;
 import com.iceuniwastudents.AppointmentApp.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,5 +44,11 @@ public class AdminController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginEmployee(@RequestBody LoginBody loginBody) throws EmailNotFound, UserNotVerified, MailFailureException {
         return new ResponseEntity<>(employeeService.login(loginBody),HttpStatus.OK);
+    }
+
+    @GetMapping("/schedule")
+    public ResponseEntity<List<Schedule>> getSchedules(@AuthenticationPrincipal Employee employee){
+        return new ResponseEntity<>(employeeService.getScheduleByEmployeeId(employee),HttpStatus.OK);
+
     }
 }

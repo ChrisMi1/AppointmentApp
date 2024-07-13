@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface ScheduleRepo extends JpaRepository<Schedule,String> {
     Optional<List<Schedule>> findByEmployeeIdAndDate(String employeeId, LocalDate date);
+    Optional<List<Schedule>> findByEmployeeId(String employeeId);
 }

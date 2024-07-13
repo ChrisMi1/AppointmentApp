@@ -32,11 +32,12 @@ public class JWTRequestFilter extends OncePerRequestFilter{
             String token = tokenHeader.substring(7);
             String employeeId = jwtService.getEmployeeId(token);
             Optional<Employee> employee = employeeRepo.findById(employeeId);
+            Employee employee1 = employee.get();
+            System.out.println(employee1);
             if (employee.isPresent()) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(employee.get(), null, new ArrayList<>(employee.get().getAuthorities()));
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
             }
         }
         filterChain.doFilter(request, response);

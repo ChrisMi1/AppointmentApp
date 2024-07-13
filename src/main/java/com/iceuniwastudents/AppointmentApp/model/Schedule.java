@@ -1,5 +1,6 @@
 package com.iceuniwastudents.AppointmentApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ManyToAny;
@@ -27,7 +28,8 @@ public class Schedule {
     private LocalTime start;
     @Column(name = "end")
     private LocalTime end;
-    @ManyToOne
+    @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "employee_id")
+    @JsonIgnore
     private Employee employee;
 }

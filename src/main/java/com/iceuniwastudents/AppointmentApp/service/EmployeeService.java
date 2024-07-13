@@ -1,6 +1,7 @@
 package com.iceuniwastudents.AppointmentApp.service;
 
 import com.iceuniwastudents.AppointmentApp.Repository.EmployeeRepo;
+import com.iceuniwastudents.AppointmentApp.Repository.ScheduleRepo;
 import com.iceuniwastudents.AppointmentApp.Repository.VerificationRepo;
 import com.iceuniwastudents.AppointmentApp.dto.*;
 import com.iceuniwastudents.AppointmentApp.exception.EmailAlreadyExists;
@@ -8,6 +9,7 @@ import com.iceuniwastudents.AppointmentApp.exception.EmailNotFound;
 import com.iceuniwastudents.AppointmentApp.exception.MailFailureException;
 import com.iceuniwastudents.AppointmentApp.exception.UserNotVerified;
 import com.iceuniwastudents.AppointmentApp.model.Employee;
+import com.iceuniwastudents.AppointmentApp.model.Schedule;
 import com.iceuniwastudents.AppointmentApp.model.Verification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class EmployeeService {
     private final JWTService jwtService;
     private final EmailService emailService;
     private final VerificationRepo verificationRepo;
-
+    private final ScheduleRepo scheduleRepo;
 
     public List<EmployeeResponse> getAllEmployees(){
         List<Employee> employees = employeeRepo.findAll();
@@ -113,5 +115,10 @@ public class EmployeeService {
             throw new EmailNotFound("The email doesn't exist");
         }
 
+    }
+
+    public List<Schedule> getScheduleByEmployeeId(Employee employee){
+        Optional<List<Schedule>> scheduleList = scheduleRepo.findByEmployeeId(employee.getId());
+        return scheduleList.get();
     }
 }

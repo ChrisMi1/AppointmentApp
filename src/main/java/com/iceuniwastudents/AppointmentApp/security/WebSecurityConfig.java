@@ -19,6 +19,7 @@ public class WebSecurityConfig {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .requestMatchers("/api/admin/register").hasRole("ADMIN")
+                .requestMatchers("/schedule").authenticated()
                 .requestMatchers("/api/admin/availability","/api/appointment","/api/employees","/api/admin/login","/api/admin/verify").permitAll();
 
         return http.build();
