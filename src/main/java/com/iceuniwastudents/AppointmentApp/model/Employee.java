@@ -3,9 +3,10 @@ package com.iceuniwastudents.AppointmentApp.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name ="employee")
@@ -46,5 +47,11 @@ public class Employee {
             verificationTokens=new ArrayList<>();
         }
         verificationTokens.add(verification);
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(this.role));
+        return authorities;
     }
 }
