@@ -41,6 +41,7 @@ public class AdminController {
             return new ResponseEntity<>("Something went wrong!",HttpStatus.CONFLICT);
         }
     }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginEmployee(@RequestBody LoginBody loginBody) throws EmailNotFound, UserNotVerified, MailFailureException {
         return new ResponseEntity<>(employeeService.login(loginBody),HttpStatus.OK);
@@ -49,6 +50,10 @@ public class AdminController {
     @GetMapping("/schedule")
     public ResponseEntity<List<Schedule>> getSchedules(@AuthenticationPrincipal Employee employee){
         return new ResponseEntity<>(employeeService.getScheduleByEmployeeId(employee),HttpStatus.OK);
+    }
 
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable String employeeId){
+        return new ResponseEntity<>(employeeService.deleteEmployeeById(employeeId),HttpStatus.OK);
     }
 }

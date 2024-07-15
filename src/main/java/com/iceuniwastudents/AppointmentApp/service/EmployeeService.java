@@ -121,4 +121,9 @@ public class EmployeeService {
         Optional<List<Schedule>> scheduleList = scheduleRepo.findByEmployeeId(employee.getId());
         return scheduleList.get();
     }
+
+    public String deleteEmployeeById(String id){
+        employeeRepo.deleteById(id);
+        return "The employee deleted successfully!";
+    }
 }

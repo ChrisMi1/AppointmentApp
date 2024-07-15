@@ -18,7 +18,7 @@ public class WebSecurityConfig {
         http.csrf(csrf->csrf.disable());
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
-                .requestMatchers("/api/admin/register").hasRole("ADMIN")
+                .requestMatchers("/api/admin/register","/api/admin/{id}").hasRole("ADMIN")
                 .requestMatchers("/schedule").authenticated()
                 .requestMatchers("/api/admin/availability","/api/appointment","/api/employees","/api/admin/login","/api/admin/verify").permitAll();
 
